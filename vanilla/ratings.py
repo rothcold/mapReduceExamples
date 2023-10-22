@@ -13,7 +13,7 @@ basePath = pathlib.Path(__file__).parent.absolute()
 def load_data():
     result = []
     for dataPath in basePath.joinpath("../data").iterdir():
-    # dataPath = basePath.joinpath("../data/Strength Training.csv")
+        # dataPath = basePath.joinpath("../data/Strength Training.csv")
         print("Processing file:", dataPath)
         df = pandas.read_csv(dataPath, low_memory=False)
         for i, row in df.iterrows():
@@ -35,6 +35,7 @@ def load_data():
 def category_mapper(item):
     return item["main_category"], item
 
+
 def rating_reducer(val, item):
     try:
         rating = float(item["ratings"])
@@ -46,13 +47,17 @@ def rating_reducer(val, item):
     except:
         return val
 
+
 def main():
     data = load_data()
     mapOutput = custom_map(category_mapper, data)
     categories = mapOutput.keys()
     for category in categories:
-        ratings = custom_reduce(rating_reducer, mapOutput.read(category), {"sum_ratings" :0, "count":0})
-        print("Avarage Rating for %s: %f" % (category, ratings["sum_ratings"]/ratings["count"]))
+        ratings = custom_reduce(rating_reducer, mapOutput.read(
+            category), {"sum_ratings": 0, "count": 0})
+        print("Avarage Rating for %s: %f" %
+                (category, ratings["sum_ratings"]/ratings["count"]))
+
 
 if __name__ == "__main__":
     main()
